@@ -26,26 +26,25 @@ export function transformData(input: Data[]): TransformedData[] {
     return { date, data };
   });
 }
-
 export function revertData(transformed: TransformedData[]): Data[] {
+  // @ts-expect-error
   return transformed.map((item) => {
     const scores = item.data.reduce((acc, { name, score }) => {
       acc[name] = score;
       return acc;
     }, {} as { [key: string]: number });
 
-    return {
+    const result: { date: string; [key: string]: number | string } = {
       date: item.date,
-      Cut: scores.Cut || 0,
-      Temp: scores.Temp || 0,
-      Pol: scores.Pol || 0,
-      CNC: scores.CNC || 0,
-      IG: scores.IG || 0,
-      Lami: scores.Lami || 0,
-      Span: scores.Span || 0,
-      Crating: scores.Crating || 0,
-      Loading: scores.Loading || 0,
     };
+
+    Object.keys(scores).forEach((key) => {
+      if (scores[key] !== undefined) {
+        result[key] = scores[key];
+      }
+    });
+
+    return result;
   });
 }
 

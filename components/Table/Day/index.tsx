@@ -1,11 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { fetchDaily } from "../../../api/services";
+import { fetchDaily, updateDate } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
-import { Data, processData } from "../../../utils/data";
+import { Data, processData, revertData } from "../../../utils/data";
 import { formatDate, isWorkingDay } from "../../../utils/date";
 import Select from "../../Common/DaySelect";
+import { SmileBad } from "../../SvgIcons/smile-bad";
+import { SmileGood } from "../../SvgIcons/smile-good";
+import { SmileMedium } from "../../SvgIcons/smile-medium";
 import styles from "./style.module.css";
 
 const initialData: Data[] = [
@@ -96,9 +99,12 @@ export const Day: React.FC = () => {
 
   const fromDate = pastDate.toISOString().split("T")[0];
   console.log(currentDate);
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["daily", fromDate, toDate],
     queryFn: () => fetchDaily(fromDate, toDate),
+  });
+  const { mutateAsync } = useMutation({
+    mutationFn: updateDate,
   });
 
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
@@ -129,6 +135,26 @@ export const Day: React.FC = () => {
     }));
   };
 
+  const handleUpdate = async (value: number, name: string) => {
+    const row = processedData.find((row) => row.date === toDate);
+    if (!row) return;
+    const formed = row.data.map((entry) => {
+      console.log(entry, name);
+      if (entry.name === name) {
+        return { name, score: value };
+      }
+      return {
+        name: entry.name,
+        score: Number(entry.score),
+      };
+    });
+    const updateData = revertData([
+      { date: new Date(row.date).toISOString().split("T")[0], data: formed },
+    ]);
+    await mutateAsync(updateData);
+    refetch();
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -141,19 +167,19 @@ export const Day: React.FC = () => {
               {formatDate(row.date)}
             </th>
           ))}
-          <th>{formatDate(new Date().toISOString())}</th>
+          <th>Edit today</th>
         </tr>
       </thead>
       <tbody>
-        {processedData[0].data.map((entry) => (
+        {processedData[0]?.data.map((entry) => (
           <tr key={entry.name}>
             <td className={styles.td}>
               <div className={styles.flex}>
-                <input
+                {/* <input
                   type="checkbox"
                   checked={checkedTeams[entry.name] || false}
                   onChange={() => handleCheckboxChange(entry.name)}
-                />
+                /> */}
                 {entry.name}
               </div>
             </td>
@@ -168,19 +194,16 @@ export const Day: React.FC = () => {
             <td className={styles.td}>
               {isWorkingDay(new Date().toISOString().split("T")[0]) && (
                 <Select
-                  {...{
-                    ...(scores.find((score) => score.name === entry.name) && {
-                      value: scores.find((score) => score.name === entry.name)
-                        ?.score,
-                    }),
-                  }}
-                  onChange={(element) =>
-                    handleSelectChange(entry.name, element.value.toString())
+                  value={
+                    scores.find((score) => score.name === entry.name)?.score
                   }
+                  onChange={(element) => {
+                    handleUpdate(element.value, entry.name);
+                  }}
                   options={[
-                    { value: 1, label: "1" },
-                    { value: 2, label: "2" },
-                    { value: 3, label: "3" },
+                    { value: 1, label: <SmileBad /> },
+                    { value: 2, label: <SmileMedium /> },
+                    { value: 3, label: <SmileGood /> },
                   ]}
                 />
               )}

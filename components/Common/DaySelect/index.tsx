@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 
 interface Option {
@@ -13,31 +13,69 @@ interface SelectProps {
 }
 
 const Select: React.FC<SelectProps> = ({ value, onChange, options }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = parseInt(event.target.value, 10);
-    const selectedOption = options.find(
-      (option) => option.value === selectedValue
-    );
-    if (selectedOption) {
-      onChange(selectedOption);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<
+    string | React.ReactNode | JSX.Element
+  >("Rate");
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (value !== undefined) {
+      const selectedOption = options.find((option) => option.value === value);
+      if (selectedOption) {
+        setSelectedLabel(selectedOption.label);
+      }
+    } else {
+      setSelectedLabel("Rate");
+    }
+  }, [value, options]);
+
+  const handleOptionClick = (option: Option) => {
+    onChange(option);
+    setIsOpen(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
     }
   };
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <select
-      className={`${styles.select} ${
-        value === undefined ? styles.placeholder : ""
-      }`}
-      value={value !== undefined ? value : "Rate"}
-      onChange={handleChange}
-    >
-      {value === undefined && <option value="Rate">Rate</option>}
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+    <div className={styles.selectContainer} ref={selectRef}>
+      <div className={styles.selectDisplay} onClick={() => setIsOpen(!isOpen)}>
+        {selectedLabel}
+      </div>
+      {isOpen && (
+        <ul
+          style={{
+            listStyle: "none",
+            padding: 0,
+          }}
+          className={styles.selectOptions}
+        >
+          {options.map((option) => (
+            <li
+              key={option.value}
+              className={styles.selectOption}
+              onClick={() => handleOptionClick(option)}
+            >
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 
