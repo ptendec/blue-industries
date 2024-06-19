@@ -40,17 +40,19 @@ export const Filter = () => {
 
           <FilterAccordion title="Filters">
             <h4 className={styles.filtersTitle}>Show and hide Teams</h4>
-            <div className={styles.filtersContainer}>
-              {Object.entries(employees).map(([employee, value]) => (
-                <div
-                  className={styles.filterItem}
-                  key={employee}
-                  onClick={() => toggleEmployee(employee)}
-                >
-                  {employee}
-                  {value ? <EyeIcon /> : <EyeHideIcon />}
-                </div>
-              ))}
+            <div>
+              <div className={styles.filtersContainer}>
+                {Object.entries(employees).map(([employee, value]) => (
+                  <div
+                    className={styles.filterItem}
+                    key={employee}
+                    onClick={() => toggleEmployee(employee)}
+                  >
+                    {employee}
+                    {value ? <EyeIcon /> : <EyeHideIcon />}
+                  </div>
+                ))}
+              </div>
               <BottomFilter handleSelectChange={handleSelectChange}/>
             </div>
         </FilterAccordion>

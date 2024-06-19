@@ -1,7 +1,6 @@
 .select {
   position: relative;
   width: 200px;
-  z-index: 1000;
 }
 
 .selectHeader {
@@ -9,7 +8,6 @@
   border: 1px solid #000;
   cursor: pointer;
   display: flex;
-  color: #666666;
   justify-content: space-between;
   align-items: center;
   background-color: #fff;

@@ -7,6 +7,7 @@ import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 import FilterTabs from "../FilterTabs";
 import SortSelect from "../SortSelect";
+import ExportSelect from "../ExportSelect";
 
 export const BottomFilter = ({ handleSelectChange }: any) => {
   return (
@@ -43,7 +44,7 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
           >
             Low Teams 😠
           </button>
-          <Select
+          <ExportSelect
             options={["Export to PDF", "Export to Excel"]}
             placeholder="Export data"
             onChange={handleSelectChange}
