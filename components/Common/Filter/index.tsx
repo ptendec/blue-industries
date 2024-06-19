@@ -68,7 +68,7 @@ export const Filter = () => {
                 }),
               }}
               className={styles.button}
-              onClick={() => setFilterBy("Best")}
+              onClick={() => setFilterBy(filterBy === "Best" ? "None" : "Best")}
             >
               Best teams 😊
             </button>
@@ -81,7 +81,9 @@ export const Filter = () => {
                 }),
               }}
               className={styles.button}
-              onClick={() => setFilterBy("Average")}
+              onClick={() =>
+                setFilterBy(filterBy === "Average" ? "None" : "Average")
+              }
             >
               Average Teams 😐
             </button>
@@ -94,7 +96,7 @@ export const Filter = () => {
                 }),
               }}
               className={styles.button}
-              onClick={() => setFilterBy("Low")}
+              onClick={() => setFilterBy(filterBy === "Low" ? "None" : "Low")}
             >
               Low Teams 😠
             </button>
