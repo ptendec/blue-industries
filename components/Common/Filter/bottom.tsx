@@ -1,4 +1,7 @@
 import { useEmployeeVisibilityStore } from "../../../store";
+import { SmileBad } from "../../SvgIcons/smile-bad";
+import { SmileGood } from "../../SvgIcons/smile-good";
+import { SmileMedium } from "../../SvgIcons/smile-medium";
 import ExportSelect from "../ExportSelect";
 import Select from "../Select";
 import SortSelect from "../SortSelect";
@@ -25,7 +28,8 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         onClick={() => setFilterBy(filterBy === "Best" ? "None" : "Best")}
         className={styles.button}
       >
-        Best teams 😊
+        <span>Best teams</span>
+        <SmileGood className={styles.smile}/>
       </button>
       <button
         style={{
@@ -38,7 +42,8 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         className={styles.button}
         onClick={() => setFilterBy(filterBy === "Average" ? "None" : "Average")}
       >
-        Average Teams 😐
+        <span>Average Teams</span>
+        <SmileMedium className={styles.smile}/>
       </button>
       <button
         style={{
@@ -51,7 +56,8 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         className={styles.button}
         onClick={() => setFilterBy(filterBy === "Low" ? "None" : "Low")}
       >
-        Low Teams 😠
+        <span>Low Teams</span>
+        <SmileBad className={styles.smile}/>
       </button>
       <ExportSelect
         options={["Export to PDF", "Export to Excel"]}
