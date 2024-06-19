@@ -9,9 +9,12 @@ export default function MainPage() {
     <NoSSR>
       <Flex>
         <Sidebar />
-        <div style={{
-          padding: '0 32px'
-        }}>
+        <div
+          style={{
+            padding: "0 32px",
+            marginBottom: "80px",
+          }}
+        >
           <Filter />
           <Day />
         </div>
