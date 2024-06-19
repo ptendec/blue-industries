@@ -1,6 +1,6 @@
 import { Tabs } from "@mantine/core";
 import { useRouter } from "next/router";
-import Day from "../Table/Day";
+import { Day } from "../Table/Day";
 
 export const RangeTabs = () => {
   const router = useRouter();

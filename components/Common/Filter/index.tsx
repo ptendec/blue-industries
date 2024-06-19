@@ -31,7 +31,13 @@ export const Filter = () => {
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <h1>Team effectiveness</h1>
+        <h1
+          style={{
+            color: "rgba(0, 98, 175, 1)",
+          }}
+        >
+          Team effectiveness
+        </h1>
         <Tabs
           tabs={["Week", "4 weeks", "1 month", "1 year"]}
           onTabClick={handleTabClick}

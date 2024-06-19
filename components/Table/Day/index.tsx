@@ -1,10 +1,10 @@
-import { Checkbox, Flex, Select, Table } from "@mantine/core";
 import React, { useState } from "react";
-import { useEmployeeVisibilityStore } from "../../store";
-import { valueToEmoji } from "../../utils/common";
-import { Data, TransformedData, processData } from "../../utils/data";
-import { formatDate } from "../../utils/date";
-
+import { useEmployeeVisibilityStore } from "../../../store";
+import { valueToEmoji } from "../../../utils/common";
+import { Data, TransformedData, processData } from "../../../utils/data";
+import { formatDate } from "../../../utils/date";
+import Select from "../../Common/Select";
+import styles from "./style.module.css";
 const initialData: Data[] = [
   {
     date: "2024-06-03",
@@ -116,7 +116,7 @@ const initialData: Data[] = [
   },
 ];
 
-const Day: React.FC = () => {
+export const Day: React.FC = () => {
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
   const processedData = processData(initialData, sort, employees, filterBy);
 
@@ -174,63 +174,63 @@ const Day: React.FC = () => {
   };
 
   return (
-    <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th></Table.Th>
+    <table className={styles.table}>
+      <thead className={styles.thead}>
+        <tr>
+          <th></th>
           {processedData.map((row) => (
-            <Table.Th key={row.date}>{formatDate(row.date)}</Table.Th>
+            <th className={styles.th} key={row.date}>
+              {formatDate(row.date)}
+            </th>
           ))}
-          <Table.Th>Select Emoji</Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-      <Table.Tbody>
+          <th>Select Emoji</th>
+        </tr>
+      </thead>
+      <tbody>
         {processedData[0].data.map((entry) => (
-          <Table.Tr key={entry.name}>
-            <Table.Td>
-              <Flex gap={4} align="center">
-                <Checkbox
+          <tr key={entry.name}>
+            <td className={styles.td}>
+              <div className={styles.flex}>
+                <input
+                  type="checkbox"
                   checked={checkedTeams[entry.name] || false}
                   onChange={() => handleCheckboxChange(entry.name)}
                 />
                 {entry.name}
-              </Flex>
-            </Table.Td>
+              </div>
+            </td>
             {processedData.map((row) => {
               const dataItem = row.data.find((d) => d.name === entry.name);
               return (
-                <Table.Td key={`${row.date}-${entry.name}`}>
+                <td className={styles.td} key={`${row.date}-${entry.name}`}>
                   {dataItem ? valueToEmoji(dataItem.score) : null}
-                </Table.Td>
+                </td>
               );
             })}
-            <Table.Td>
+            <td className={styles.td}>
               {isWorkingDay(new Date().toISOString().split("T")[0]) && (
                 <Select
-                  placeholder="Select Emoji"
-                  data={[
-                    { value: "3", label: "🙂" },
-                    { value: "2", label: "😐" },
-                    { value: "1", label: "😡" },
-                  ]}
-                  value={selectValues[
-                    new Date().toISOString().split("T")[0]
-                  ]?.toString()}
+                  placeholder="Rate"
+                  className={styles.select}
+                  value={
+                    selectValues[
+                      new Date().toISOString().split("T")[0]
+                    ]?.toString() || ""
+                  }
                   onChange={(value) =>
                     handleSelectChange(
                       new Date().toISOString().split("T")[0],
                       entry.name,
-                      value as string
+                      value
                     )
                   }
+                  options={["🙂", "😐", "😡"]}
                 />
               )}
-            </Table.Td>
-          </Table.Tr>
+            </td>
+          </tr>
         ))}
-      </Table.Tbody>
-    </Table>
+      </tbody>
+    </table>
   );
 };
-
-export default Day;

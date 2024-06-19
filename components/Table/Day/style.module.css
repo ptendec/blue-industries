@@ -1,0 +1,54 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th,
+.td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.thead {
+  font-size: 14px;
+}
+
+.th {
+  border-right: 1px solid #ddd;
+  border-top: none;
+}
+
+.flex {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.select {
+  width: 100px;
+  border: none !important;
+}
+
+/* Remove outer borders by applying classes */
+.no-border-left {
+  border-left: none;
+}
+
+.no-border-right {
+  border-right: none;
+}
+
+.no-border-top {
+  border-top: none;
+}
+
+.no-border-bottom {
+  border-bottom: none;
+}
+
+/* Add inner borders */
+.inner-border {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}

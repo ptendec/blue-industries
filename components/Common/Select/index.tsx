@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
 
 interface SelectProps {
@@ -6,6 +6,8 @@ interface SelectProps {
   placeholder: string;
   onChange: (option: string) => void;
   showArrow?: boolean;
+  className?: string;
+  value?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -13,9 +15,15 @@ const Select: React.FC<SelectProps> = ({
   placeholder,
   onChange,
   showArrow = true,
+  className,
+  value,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string>(value || "");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setSelectedOption(value || "");
+  }, [value]);
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
@@ -24,7 +32,7 @@ const Select: React.FC<SelectProps> = ({
   };
 
   return (
-    <div className={styles.select}>
+    <div className={`${styles.select} ${className}`}>
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
         {selectedOption || placeholder}
         {showArrow && (
