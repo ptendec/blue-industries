@@ -126,7 +126,7 @@ export const Day: React.FC = () => {
               {formatDate(row.date)}
             </th>
           ))}
-          <th>Select Emoji</th>
+          <th>{formatDate(new Date().toISOString())}</th>
         </tr>
       </thead>
       <tbody>
