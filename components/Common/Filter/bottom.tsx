@@ -1,4 +1,5 @@
 import { useEmployeeVisibilityStore } from "../../../store";
+import ExportSelect from "../ExportSelect";
 import Select from "../Select";
 import SortSelect from "../SortSelect";
 import styles from "./style.module.css";
@@ -52,7 +53,7 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
       >
         Low Teams 😠
       </button>
-      <Select
+      <ExportSelect
         options={["Export to PDF", "Export to Excel"]}
         placeholder="Export data"
         onChange={handleSelectChange}
