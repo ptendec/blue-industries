@@ -1,12 +1,11 @@
 import { useDisclosure } from "@mantine/hooks";
-import Image from "next/image";
 import { useEmployeeVisibilityStore } from "../../../store";
-import Accordion from "../Accordion";
+import FilterAccordion from "../FilterAccordion";
 import Select from "../Select";
 import Tabs from "../Tabs";
 import styles from "./style.module.css";
-import HideIcon from "/public/icons/hide.svg";
-import ShowIcon from "/public/icons/show.svg";
+import { EyeIcon } from "../../SvgIcons/eye";
+import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 
 export const Filter = () => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -31,31 +30,29 @@ export const Filter = () => {
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <h1
-          style={{
-            color: "rgba(0, 98, 175, 1)",
-          }}
-        >
-          Team effectiveness
-        </h1>
+        <h1 className={styles.mainTitle}>Team effectiveness</h1>
+        <div className={styles.filterBlocks}>
         <Tabs
           tabs={["Week", "4 weeks", "1 month", "1 year"]}
           onTabClick={handleTabClick}
         />
-        <Accordion title="Filters">
-          <div className={styles.filters}>
-            {Object.entries(employees).map(([employee, value]) => (
-              <div
-                className={styles.filterItem}
-                key={employee}
-                onClick={() => toggleEmployee(employee)}
-              >
-                {employee}
-                <Image src={value ? ShowIcon : HideIcon} alt="" />
-              </div>
-            ))}
+        
+        <FilterAccordion title="Filters">
+          <h4 className={styles.filtersTitle}>Show and hide Teams</h4>
+            <div className={styles.filtersContainer}>
+              {Object.entries(employees).map(([employee, value]) => (
+                <div
+                  className={styles.filterItem}
+                  key={employee}
+                  onClick={() => toggleEmployee(employee)}
+                >
+                  {employee}
+                  {value ? <EyeIcon /> : <EyeHideIcon />}
+                </div>
+              ))}
           </div>
-        </Accordion>
+        </FilterAccordion>
+
         <div className={styles.actions}>
           <Select
             options={["Ascending grade", "Decreasing rating"]}
@@ -94,6 +91,7 @@ export const Filter = () => {
             placeholder="Export data"
             onChange={handleSelectChange}
           />
+        </div>
         </div>
       </div>
     </div>
