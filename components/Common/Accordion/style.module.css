@@ -1,0 +1,24 @@
+.accordion {
+  border: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.accordionHeader {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordionContent.open {
+  max-height: 500px;
+  /* Достаточно большое значение, чтобы вместить контент */
+  transition: max-height 0.3s ease-in;
+}
