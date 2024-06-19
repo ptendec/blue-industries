@@ -76,7 +76,7 @@ export const filterData = (
 };
 
 export const processData = (
-  initialData: Data[],
+  initialData: Data[] | undefined = [],
   sort: "Ascending" | "Descending" | "None",
   employees: { [key: string]: boolean },
   filterBy: "Best" | "Average" | "Low" | "None"

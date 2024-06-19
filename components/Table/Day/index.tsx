@@ -5,7 +5,7 @@ import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
 import { Data, processData } from "../../../utils/data";
 import { formatDate, isWorkingDay } from "../../../utils/date";
-import Select from "../../Common/Select";
+import Select from "../../Common/DaySelect";
 import styles from "./style.module.css";
 
 const initialData: Data[] = [
@@ -90,24 +90,27 @@ interface Scores {
 
 export const Day: React.FC = () => {
   const toDate = new Date().toISOString().split("T")[0];
-  const fromDate = new Date(new Date().getDate() - 7)
-    .toISOString()
-    .split("T")[0];
-  const { data } = useQuery({
+  const currentDate = new Date();
+  const pastDate = new Date(currentDate);
+  pastDate.setDate(currentDate.getDate() - 8);
+
+  const fromDate = pastDate.toISOString().split("T")[0];
+  console.log(currentDate);
+  const { data, isLoading } = useQuery({
     queryKey: ["daily", fromDate, toDate],
     queryFn: () => fetchDaily(fromDate, toDate),
   });
-  const { employees, sort, filterBy } = useEmployeeVisibilityStore();
-  const processedData = processData(initialData, sort, employees, filterBy);
 
-  const [selectedEmoji, setSelectedEmoji] = useState<number | null>(null);
+  const { employees, sort, filterBy } = useEmployeeVisibilityStore();
+  const processedData = processData(data, sort, employees, filterBy);
+
   const [checkedTeams, setCheckedTeams] = useState<{ [key: string]: boolean }>(
     {}
   );
 
   const [scores, setScores] = useState<Scores[]>([]);
 
-  const handleSelectChange = (date: string, name: string, value: string) => {
+  const handleSelectChange = (name: string, value: string) => {
     const foundScores = scores.find((score) => score.name === name);
     if (foundScores) {
       const newScores = scores.map((score) =>
@@ -125,6 +128,8 @@ export const Day: React.FC = () => {
       [name]: !prev[name],
     }));
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <table className={styles.table}>
@@ -163,23 +168,20 @@ export const Day: React.FC = () => {
             <td className={styles.td}>
               {isWorkingDay(new Date().toISOString().split("T")[0]) && (
                 <Select
-                  placeholder="Rate"
-                  className={styles.select}
                   {...{
                     ...(scores.find((score) => score.name === entry.name) && {
-                      value: scores
-                        .find((score) => score.name === entry.name)
-                        ?.score.toString(),
+                      value: scores.find((score) => score.name === entry.name)
+                        ?.score,
                     }),
                   }}
-                  onChange={(value) =>
-                    handleSelectChange(
-                      new Date().toISOString().split("T")[0],
-                      entry.name,
-                      value
-                    )
+                  onChange={(element) =>
+                    handleSelectChange(entry.name, element.value.toString())
                   }
-                  options={["1", "2", "3"]}
+                  options={[
+                    { value: 1, label: "1" },
+                    { value: 2, label: "2" },
+                    { value: 3, label: "3" },
+                  ]}
                 />
               )}
             </td>
