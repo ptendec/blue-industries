@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
-import { Data, TransformedData, processData } from "../../../utils/data";
-import { formatDate } from "../../../utils/date";
+import { Data, processData } from "../../../utils/data";
+import { formatDate, isWorkingDay } from "../../../utils/date";
 import Select from "../../Common/Select";
 import styles from "./style.module.css";
 const initialData: Data[] = [
@@ -116,6 +116,11 @@ const initialData: Data[] = [
   },
 ];
 
+interface Scores {
+  name: string;
+  score: number;
+}
+
 export const Day: React.FC = () => {
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
   const processedData = processData(initialData, sort, employees, filterBy);
@@ -125,45 +130,23 @@ export const Day: React.FC = () => {
     {}
   );
 
-  const [scores, setScores] = useState<TransformedData[]>(processedData);
+  const [scores, setScores] = useState<Scores[]>([]);
   const [selectValues, setSelectValues] = useState<{
     [date: string]: number | null;
   }>({});
 
   const handleSelectChange = (date: string, name: string, value: string) => {
-    const score = parseInt(value);
-    if (score !== null) {
-      if (Object.keys(checkedTeams).length > 0) {
-        // Apply to all checked teams
-        const updatedScores = scores.map((row) => ({
-          ...row,
-          data: row.data.map((item) =>
-            checkedTeams[item.name] ? { ...item, score } : item
-          ),
-        }));
-        setScores(updatedScores);
-        setCheckedTeams({});
-      } else {
-        // Apply to a single team
-        const updatedScores = scores.map((row) =>
-          row.date === date
-            ? {
-                ...row,
-                data: row.data.map((item) =>
-                  item.name === name ? { ...item, score } : item
-                ),
-              }
-            : row
-        );
-        setScores(updatedScores);
-      }
-      setSelectedEmoji(score);
+    const foundScores = scores.find((score) => score.name === name);
+    if (foundScores) {
+      const newScores = scores.map((score) =>
+        score.name === name ? { ...score, score: value } : score
+      );
+      // @ts-expect-error
+      setScores(newScores);
+    } else {
+      // @ts-expect-error
+      setScores([...scores, { name, score: value }]);
     }
-  };
-
-  const isWorkingDay = (date: string) => {
-    const day = new Date(date).getDay();
-    return day !== 0 && day !== 6; // Not Sunday (0) or Saturday (6)
   };
 
   const handleCheckboxChange = (name: string) => {
