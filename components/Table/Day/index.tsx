@@ -5,6 +5,7 @@ import { Data, processData } from "../../../utils/data";
 import { formatDate, isWorkingDay } from "../../../utils/date";
 import Select from "../../Common/Select";
 import styles from "./style.module.css";
+
 const initialData: Data[] = [
   {
     date: "2024-06-03",
@@ -131,21 +132,16 @@ export const Day: React.FC = () => {
   );
 
   const [scores, setScores] = useState<Scores[]>([]);
-  const [selectValues, setSelectValues] = useState<{
-    [date: string]: number | null;
-  }>({});
 
   const handleSelectChange = (date: string, name: string, value: string) => {
     const foundScores = scores.find((score) => score.name === name);
     if (foundScores) {
       const newScores = scores.map((score) =>
-        score.name === name ? { ...score, score: value } : score
+        score.name === name ? { ...score, score: Number(value) } : score
       );
-      // @ts-expect-error
       setScores(newScores);
     } else {
-      // @ts-expect-error
-      setScores([...scores, { name, score: value }]);
+      setScores([...scores, { name, score: Number(value) }]);
     }
   };
 
@@ -195,11 +191,9 @@ export const Day: React.FC = () => {
                 <Select
                   placeholder="Rate"
                   className={styles.select}
-                  value={
-                    selectValues[
-                      new Date().toISOString().split("T")[0]
-                    ]?.toString() || ""
-                  }
+                  value={String(
+                    scores.find((score) => score.name === entry.name)?.score
+                  )}
                   onChange={(value) =>
                     handleSelectChange(
                       new Date().toISOString().split("T")[0],
@@ -207,7 +201,7 @@ export const Day: React.FC = () => {
                       value
                     )
                   }
-                  options={["🙂", "😐", "😡"]}
+                  options={["1", "2", "3"]}
                 />
               )}
             </td>

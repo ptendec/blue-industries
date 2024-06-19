@@ -1,4 +1,3 @@
-import { useDisclosure } from "@mantine/hooks";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
@@ -8,7 +7,6 @@ import Select from "../Select";
 import styles from "./style.module.css";
 
 export const Filter = () => {
-  const [opened, { toggle }] = useDisclosure(false);
   const { employees, toggleEmployee, setSort, setFilterBy, filterBy } =
     useEmployeeVisibilityStore();
 
@@ -33,7 +31,7 @@ export const Filter = () => {
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
           <FilterTabs
-            tabs={["Week", "4 weeks", "1 month", "1 year"]}
+            tabs={["Week", "4 weeks", "1 year"]}
             onTabClick={handleTabClick}
           />
 
@@ -110,64 +108,4 @@ export const Filter = () => {
       </div>
     </div>
   );
-  // return (
-  //   <Box>
-  //     <Group mb={5}>
-  //       <Button onClick={toggle}>Filter &gt; </Button>
-  //     </Group>
-  //     <Collapse in={opened}>
-  //       <Group justify="center">
-  //         {Object.entries(employees).map(([employee, value]) => (
-  //           <Button
-  //             style={{
-  //               background: "transparent",
-  //               color: "black",
-  //             }}
-  //             key={employee}
-  //             onClick={() => toggleEmployee(employee)}
-  //           >
-  //             {employee} {value ? "✅" : "❌"}
-  //           </Button>
-  //         ))}
-  //       </Group>
-  //       <Flex direction="row" gap={12} align="end">
-  //         <Select
-  //           label="Sort"
-  //           defaultValue="None"
-  //           data={["Ascending", "Descending", "None"]}
-  //           onChange={(value) =>
-  //             value && setSort(value as "Ascending" | "Descending" | "None")
-  //           }
-  //         />
-  //         <Button
-  //           style={{
-  //             background: filterBy === "Best" ? "green" : "",
-  //           }}
-  //           onClick={() => setFilterBy(filterBy === "Best" ? "None" : "Best")}
-  //         >
-  //           Best teams
-  //         </Button>
-  //         <Button
-  //           style={{
-  //             background: filterBy === "Average" ? "green" : "",
-  //           }}
-  //           onClick={() =>
-  //             setFilterBy(filterBy === "Average" ? "None" : "Average")
-  //           }
-  //         >
-  //           Average teams
-  //         </Button>
-  //         <Button
-  //           style={{
-  //             background: filterBy === "Low" ? "green" : "",
-  //           }}
-  //           onClick={() => setFilterBy(filterBy === "Low" ? "None" : "Low")}
-  //         >
-  //           Low teams
-  //         </Button>
-  //         <Button disabled>Export data</Button>
-  //       </Flex>
-  //     </Collapse>
-  //   </Box>
-  // );
 };
