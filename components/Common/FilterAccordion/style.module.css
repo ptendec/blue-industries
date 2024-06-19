@@ -1,0 +1,33 @@
+.header {
+  cursor: pointer;
+  background-color: #0062AF0D;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  gap: 12px;
+  border-radius: 6px;
+}
+
+.icon {
+  transform: rotate(180deg);
+  transition: all 0.3s;
+}
+.icon.open {
+  transform: rotate(0deg);
+  transition: all 0.3s;
+}
+
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.content.open {
+  max-height: 500px;
+  /* Достаточно большое значение, чтобы вместить контент */
+  transition: max-height 0.3s ease-in;
+}

@@ -7,25 +7,37 @@
   width: 100%;
 }
 
-.filters {
+.filterBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.filtersContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 24px;
 }
 
 .filterItem {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
+  gap: 8px;
+  cursor: pointer;
+}
+.filterItem:hover {
+  color: #555;
+}
+.filtersTitle {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
 }
 
 .actions {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
 }
 
 .button {
