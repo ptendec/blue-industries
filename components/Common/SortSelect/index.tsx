@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styles from "./style.module.css";
 import { SharpArrowUp } from "../../SvgIcons/sharp-arrow-up";
+import styles from "./style.module.css";
 
 interface SelectProps {
   options: string[];
@@ -37,8 +37,9 @@ const SortSelect: React.FC<SelectProps> = ({
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
         {selectedOption || placeholder}
         {showArrow && (
-          // <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
-          <SharpArrowUp className={`${styles.arrow} ${isOpen ? styles.open : ""}`}/>
+          <SharpArrowUp
+            className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+          />
         )}
       </div>
       {isOpen && (

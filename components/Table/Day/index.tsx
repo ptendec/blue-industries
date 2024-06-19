@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchDaily, updateDate } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
-import { Data, processData, revertData } from "../../../utils/data";
+import { processData, revertData } from "../../../utils/data";
 import { formatDate, isWorkingDay } from "../../../utils/date";
 import Select from "../../Common/DaySelect";
 import { SmileBad } from "../../SvgIcons/smile-bad";
@@ -11,94 +11,19 @@ import { SmileGood } from "../../SvgIcons/smile-good";
 import { SmileMedium } from "../../SvgIcons/smile-medium";
 import styles from "./style.module.css";
 
-const initialData: Data[] = [
-  {
-    date: "2024-06-13",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-  {
-    date: "2024-06-14",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-  {
-    date: "2024-06-15",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-  {
-    date: "2024-06-16",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-  {
-    date: "2024-06-17",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-  {
-    date: "2024-06-18",
-    Cut: 2,
-    Temp: 1,
-    Pol: 3,
-    CNC: 3,
-    IG: 1,
-    Lami: 3,
-    Span: 3,
-    Crating: 3,
-    Loading: 2,
-  },
-];
-
 interface Scores {
   name: string;
   score: number;
 }
 
 export const Day: React.FC = () => {
-  const toDate = new Date().toISOString().split("T")[0];
   const currentDate = new Date();
   const pastDate = new Date(currentDate);
+  const pastDate2 = new Date(currentDate);
   pastDate.setDate(currentDate.getDate() - 8);
-
+  pastDate2.setDate(currentDate.getDate() - 1);
+  const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
-  console.log(currentDate);
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["daily", fromDate, toDate],
     queryFn: () => fetchDaily(fromDate, toDate),
@@ -110,36 +35,17 @@ export const Day: React.FC = () => {
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
   const processedData = processData(data, sort, employees, filterBy);
 
-  const [checkedTeams, setCheckedTeams] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-
   const [scores, setScores] = useState<Scores[]>([]);
 
-  const handleSelectChange = (name: string, value: string) => {
-    const foundScores = scores.find((score) => score.name === name);
-    if (foundScores) {
-      const newScores = scores.map((score) =>
-        score.name === name ? { ...score, score: Number(value) } : score
-      );
-      setScores(newScores);
-    } else {
-      setScores([...scores, { name, score: Number(value) }]);
-    }
-  };
-
-  const handleCheckboxChange = (name: string) => {
-    setCheckedTeams((prev) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
-  };
+  useEffect(() => {
+    const row = processedData.find((row) => row.date === toDate);
+    setScores(row?.data ?? []);
+  }, [data]);
 
   const handleUpdate = async (value: number, name: string) => {
     const row = processedData.find((row) => row.date === toDate);
     if (!row) return;
     const formed = row.data.map((entry) => {
-      console.log(entry, name);
       if (entry.name === name) {
         return { name, score: value };
       }
@@ -167,7 +73,7 @@ export const Day: React.FC = () => {
               {formatDate(row.date)}
             </th>
           ))}
-          <th>Edit today</th>
+          <th>{formatDate(new Date().toISOString())}</th>
         </tr>
       </thead>
       <tbody>
@@ -194,9 +100,9 @@ export const Day: React.FC = () => {
             <td className={styles.td}>
               {isWorkingDay(new Date().toISOString().split("T")[0]) && (
                 <Select
-                  value={
+                  value={Number(
                     scores.find((score) => score.name === entry.name)?.score
-                  }
+                  )}
                   onChange={(element) => {
                     handleUpdate(element.value, entry.name);
                   }}

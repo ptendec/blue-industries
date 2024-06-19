@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { SharpArrowUp } from "../../SvgIcons/sharp-arrow-up";
 import styles from "./style.module.css";
 
 interface Option {
@@ -55,6 +56,9 @@ const Select: React.FC<SelectProps> = ({ value, onChange, options }) => {
     <div className={styles.selectContainer} ref={selectRef}>
       <div className={styles.selectDisplay} onClick={() => setIsOpen(!isOpen)}>
         {selectedLabel}
+        <SharpArrowUp
+          className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+        />
       </div>
       {isOpen && (
         <ul

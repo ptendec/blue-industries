@@ -2,8 +2,6 @@ import { useEmployeeVisibilityStore } from "../../../store";
 import { SmileBad } from "../../SvgIcons/smile-bad";
 import { SmileGood } from "../../SvgIcons/smile-good";
 import { SmileMedium } from "../../SvgIcons/smile-medium";
-import ExportSelect from "../ExportSelect";
-import Select from "../Select";
 import SortSelect from "../SortSelect";
 import styles from "./style.module.css";
 
@@ -29,7 +27,7 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         className={styles.button}
       >
         <span>Best teams</span>
-        <SmileGood className={styles.smile}/>
+        <SmileGood className={styles.smile} />
       </button>
       <button
         style={{
@@ -43,7 +41,7 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         onClick={() => setFilterBy(filterBy === "Average" ? "None" : "Average")}
       >
         <span>Average Teams</span>
-        <SmileMedium className={styles.smile}/>
+        <SmileMedium className={styles.smile} />
       </button>
       <button
         style={{
@@ -57,13 +55,13 @@ export const BottomFilter = ({ handleSelectChange }: any) => {
         onClick={() => setFilterBy(filterBy === "Low" ? "None" : "Low")}
       >
         <span>Low Teams</span>
-        <SmileBad className={styles.smile}/>
+        <SmileBad className={styles.smile} />
       </button>
-      <ExportSelect
+      {/* <ExportSelect
         options={["Export to PDF", "Export to Excel"]}
         placeholder="Export data"
         onChange={handleSelectChange}
-      />
+      /> */}
     </div>
   );
 };
