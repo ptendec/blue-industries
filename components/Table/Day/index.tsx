@@ -191,9 +191,13 @@ export const Day: React.FC = () => {
                 <Select
                   placeholder="Rate"
                   className={styles.select}
-                  value={String(
-                    scores.find((score) => score.name === entry.name)?.score
-                  )}
+                  {...{
+                    ...(scores.find((score) => score.name === entry.name) && {
+                      value: scores
+                        .find((score) => score.name === entry.name)
+                        ?.score.toString(),
+                    }),
+                  }}
                   onChange={(value) =>
                     handleSelectChange(
                       new Date().toISOString().split("T")[0],
