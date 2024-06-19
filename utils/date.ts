@@ -1,14 +1,25 @@
-export function formatDate(date: string): string {
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    weekday: "short",
-  };
+export function formatDate(paramDate: string): string {
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const date = new Date(paramDate);
 
-  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-    new Date(date)
-  );
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  const dayOfWeek = daysOfWeek[date.getDay()];
 
-  return formattedDate.replace(",", "");
+  return `${day} ${month} ${year} (${dayOfWeek}.)`;
 }

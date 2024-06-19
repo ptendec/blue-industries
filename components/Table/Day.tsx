@@ -174,7 +174,7 @@ const Day: React.FC = () => {
   };
 
   return (
-    <Table style={{ fontSize: 18 }}>
+    <Table>
       <Table.Thead>
         <Table.Tr>
           <Table.Th></Table.Th>

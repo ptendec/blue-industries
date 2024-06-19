@@ -14,8 +14,16 @@ export const Filter = () => {
     useEmployeeVisibilityStore();
 
   const handleSelectChange = (option: string) => {
-    console.log("Selected option:", option);
+    switch (option) {
+      case "Ascending grade":
+        return setSort("Ascending");
+      case "Decreasing rating":
+        return setSort("Descending");
+      default:
+        return setSort("None");
+    }
   };
+
   const handleTabClick = (tab: string) => {
     console.log("Selected tab:", tab);
   };
