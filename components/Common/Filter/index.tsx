@@ -1,10 +1,11 @@
 import { useEmployeeVisibilityStore } from "../../../store";
+import styles from "./style.module.css";
 import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 import FilterAccordion from "../FilterAccordion";
 import FilterTabs from "../FilterTabs";
-import Select from "../Select";
-import styles from "./style.module.css";
+import SortSelect from "../SortSelect";
+import { BottomFilter } from "./bottom";
 
 export const Filter = () => {
   const { employees, toggleEmployee, setSort, setFilterBy, filterBy } =
@@ -48,62 +49,10 @@ export const Filter = () => {
                   {value ? <EyeIcon /> : <EyeHideIcon />}
                 </div>
               ))}
+              <BottomFilter handleSelectChange={handleSelectChange}/>
             </div>
-          </FilterAccordion>
+        </FilterAccordion>
 
-          <div className={styles.actions}>
-            <Select
-              options={["Ascending grade", "Decreasing rating"]}
-              placeholder="Sort by ..."
-              onChange={handleSelectChange}
-            />
-            <button
-              style={{
-                background: "rgba(153, 213, 42, 1)",
-                color: "white",
-                ...(filterBy === "Best" && {
-                  border: "2px solid rgba(114, 157, 33, 1)",
-                }),
-              }}
-              className={styles.button}
-              onClick={() => setFilterBy(filterBy === "Best" ? "None" : "Best")}
-            >
-              Best teams 😊
-            </button>
-            <button
-              style={{
-                background: "rgba(255, 178, 36, 1)",
-                color: "white",
-                ...(filterBy === "Average" && {
-                  border: "2px solid rgba(196, 137, 28, 1)",
-                }),
-              }}
-              className={styles.button}
-              onClick={() =>
-                setFilterBy(filterBy === "Average" ? "None" : "Average")
-              }
-            >
-              Average Teams 😐
-            </button>
-            <button
-              style={{
-                background: "rgba(229, 77, 46, 1)",
-                color: "white",
-                ...(filterBy === "Low" && {
-                  border: "2px solid rgba(168, 56, 33, 1)",
-                }),
-              }}
-              className={styles.button}
-              onClick={() => setFilterBy(filterBy === "Low" ? "None" : "Low")}
-            >
-              Low Teams 😠
-            </button>
-            <Select
-              options={["Export to PDF", "Export to Excel"]}
-              placeholder="Export data"
-              onChange={handleSelectChange}
-            />
-          </div>
         </div>
       </div>
     </div>
