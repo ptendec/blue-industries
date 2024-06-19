@@ -9,10 +9,12 @@ export default function MainPage() {
     <NoSSR>
       <Flex>
         <Sidebar />
-        <Flex direction="column" align="flex-start" mx={20}>
+        <div style={{
+          padding: '0 32px'
+        }}>
           <Filter />
           <Day />
-        </Flex>
+        </div>
       </Flex>
     </NoSSR>
   );
