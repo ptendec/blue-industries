@@ -1,11 +1,11 @@
 import { useDisclosure } from "@mantine/hooks";
 import { useEmployeeVisibilityStore } from "../../../store";
+import { EyeIcon } from "../../SvgIcons/eye";
+import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 import FilterAccordion from "../FilterAccordion";
 import Select from "../Select";
 import Tabs from "../Tabs";
 import styles from "./style.module.css";
-import { EyeIcon } from "../../SvgIcons/eye";
-import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 
 export const Filter = () => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -32,13 +32,13 @@ export const Filter = () => {
       <div className={styles.content}>
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
-        <Tabs
-          tabs={["Week", "4 weeks", "1 month", "1 year"]}
-          onTabClick={handleTabClick}
-        />
-        
-        <FilterAccordion title="Filters">
-          <h4 className={styles.filtersTitle}>Show and hide Teams</h4>
+          <Tabs
+            tabs={["Week", "4 weeks", "1 month", "1 year"]}
+            onTabClick={handleTabClick}
+          />
+
+          <FilterAccordion title="Filters">
+            <h4 className={styles.filtersTitle}>Show and hide Teams</h4>
             <div className={styles.filtersContainer}>
               {Object.entries(employees).map(([employee, value]) => (
                 <div
@@ -50,48 +50,60 @@ export const Filter = () => {
                   {value ? <EyeIcon /> : <EyeHideIcon />}
                 </div>
               ))}
-          </div>
-        </FilterAccordion>
+            </div>
+          </FilterAccordion>
 
-        <div className={styles.actions}>
-          <Select
-            options={["Ascending grade", "Decreasing rating"]}
-            placeholder="Sort by ..."
-            onChange={handleSelectChange}
-          />
-          <button
-            style={{
-              background: "rgba(153, 213, 42, 1)",
-              color: "white",
-            }}
-            className={styles.button}
-          >
-            Best teams 😊
-          </button>
-          <button
-            style={{
-              background: "rgba(255, 178, 36, 1)",
-              color: "white",
-            }}
-            className={styles.button}
-          >
-            Average Teams 😐
-          </button>
-          <button
-            style={{
-              background: "rgba(229, 77, 46, 1)",
-              color: "white",
-            }}
-            className={styles.button}
-          >
-            Low Teams 😠
-          </button>
-          <Select
-            options={["Export to PDF", "Export to Excel"]}
-            placeholder="Export data"
-            onChange={handleSelectChange}
-          />
-        </div>
+          <div className={styles.actions}>
+            <Select
+              options={["Ascending grade", "Decreasing rating"]}
+              placeholder="Sort by ..."
+              onChange={handleSelectChange}
+            />
+            <button
+              style={{
+                background: "rgba(153, 213, 42, 1)",
+                color: "white",
+                ...(filterBy === "Best" && {
+                  border: "2px solid rgba(114, 157, 33, 1)",
+                }),
+              }}
+              className={styles.button}
+              onClick={() => setFilterBy("Best")}
+            >
+              Best teams 😊
+            </button>
+            <button
+              style={{
+                background: "rgba(255, 178, 36, 1)",
+                color: "white",
+                ...(filterBy === "Average" && {
+                  border: "2px solid rgba(196, 137, 28, 1)",
+                }),
+              }}
+              className={styles.button}
+              onClick={() => setFilterBy("Average")}
+            >
+              Average Teams 😐
+            </button>
+            <button
+              style={{
+                background: "rgba(229, 77, 46, 1)",
+                color: "white",
+                ...(filterBy === "Low" && {
+                  border: "2px solid rgba(168, 56, 33, 1)",
+                }),
+              }}
+              className={styles.button}
+              onClick={() => setFilterBy("Low")}
+            >
+              Low Teams 😠
+            </button>
+            <Select
+              options={["Export to PDF", "Export to Excel"]}
+              placeholder="Export data"
+              onChange={handleSelectChange}
+            />
+          </div>
         </div>
       </div>
     </div>
