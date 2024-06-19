@@ -6,6 +6,7 @@ import Tabs from "../Tabs";
 import styles from "./style.module.css";
 import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
+import FilterTabs from "../FilterTabs";
 
 export const Filter = () => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -32,7 +33,7 @@ export const Filter = () => {
       <div className={styles.content}>
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
-        <Tabs
+        <FilterTabs
           tabs={["Week", "4 weeks", "1 month", "1 year"]}
           onTabClick={handleTabClick}
         />
