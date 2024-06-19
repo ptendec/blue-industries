@@ -3,8 +3,8 @@ import { useEmployeeVisibilityStore } from "../../../store";
 import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 import FilterAccordion from "../FilterAccordion";
+import FilterTabs from "../FilterTabs";
 import Select from "../Select";
-import Tabs from "../Tabs";
 import styles from "./style.module.css";
 
 export const Filter = () => {
@@ -32,7 +32,7 @@ export const Filter = () => {
       <div className={styles.content}>
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
-          <Tabs
+          <FilterTabs
             tabs={["Week", "4 weeks", "1 month", "1 year"]}
             onTabClick={handleTabClick}
           />
