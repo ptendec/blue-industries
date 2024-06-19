@@ -1,4 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { fetchDaily } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
 import { Data, processData } from "../../../utils/data";
@@ -87,6 +89,14 @@ interface Scores {
 }
 
 export const Day: React.FC = () => {
+  const toDate = new Date().toISOString().split("T")[0];
+  const fromDate = new Date(new Date().getDate() - 7)
+    .toISOString()
+    .split("T")[0];
+  const { data } = useQuery({
+    queryKey: ["daily", fromDate, toDate],
+    queryFn: () => fetchDaily(fromDate, toDate),
+  });
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
   const processedData = processData(initialData, sort, employees, filterBy);
 

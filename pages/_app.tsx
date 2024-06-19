@@ -1,9 +1,12 @@
-import "@mantine/core/styles.css";
-import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Head from "next/head";
 import { theme } from "../theme";
 
 export default function App({ Component, pageProps }: any) {
+  const queryClient = new QueryClient();
+
   return (
     <MantineProvider theme={theme}>
       <Head>
@@ -14,7 +17,9 @@ export default function App({ Component, pageProps }: any) {
         />
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </MantineProvider>
   );
 }
