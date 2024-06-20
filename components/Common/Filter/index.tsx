@@ -19,7 +19,7 @@ export const Filter = () => {
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
           <FilterTabs
-            tabs={["Week", "4 weeks", "1 month", "1 year"]}
+            tabs={["Week", "4 weeks", "Month", "Year"]}
             onTabClick={handleTabClick}
           />
           <FilterAccordion title="Filters">

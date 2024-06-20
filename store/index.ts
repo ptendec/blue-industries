@@ -7,6 +7,8 @@ interface EmployeeVisibilityState {
   setSort: (sort: "Ascending" | "Descending" | "None") => void;
   filterBy: "Best" | "Average" | "Low" | "None";
   setFilterBy: (filterBy: "Best" | "Average" | "Low" | "None") => void;
+  type: "year" | "4 week" | "week" | "month";
+  setType: (type: "4 week" | "week" | "month" | "year") => void;
 }
 
 export const useEmployeeVisibilityStore = create<EmployeeVisibilityState>(
@@ -34,5 +36,7 @@ export const useEmployeeVisibilityStore = create<EmployeeVisibilityState>(
     filterBy: "None",
     setFilterBy: (filterBy: "Best" | "Average" | "Low" | "None") =>
       set({ filterBy }),
+    type: "week",
+    setType: (type: "4 week" | "week" | "month" | "year") => set({ type }),
   })
 );
