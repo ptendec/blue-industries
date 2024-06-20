@@ -1,4 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
+import { exportData } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
+import { transformDataToExport } from "../../../utils/data";
 import { SmileBad } from "../../SvgIcons/smile-bad";
 import { SmileGood } from "../../SvgIcons/smile-good";
 import { SmileMedium } from "../../SvgIcons/smile-medium";
@@ -7,9 +10,20 @@ import SortSelect from "../SortSelect";
 import styles from "./style.module.css";
 
 export const BottomFilter = () => {
-  const { filterBy, setFilterBy } = useEmployeeVisibilityStore();
+  const { filterBy, setFilterBy, dataForExport } = useEmployeeVisibilityStore();
+  const { mutateAsync } = useMutation({
+    mutationFn: exportData,
+  });
 
-  const handleSelectChange = (value: string) => {};
+  const handleSelectChange = async (value: string) => {
+    if (value === "Export to Excel") {
+      console.log(transformDataToExport(dataForExport));
+      const res = await mutateAsync(transformDataToExport(dataForExport));
+      const body = await res.json();
+
+      window.location = body.body;
+    }
+  };
 
   return (
     <div className={styles.actions}>
@@ -57,7 +71,7 @@ export const BottomFilter = () => {
         <SmileBad className={styles.smile} />
       </button>
       <ExportSelect
-        options={["Export to PDF", "Export to Excel"]}
+        options={["Export to Excel"]}
         placeholder="Export data"
         onChange={handleSelectChange}
       />

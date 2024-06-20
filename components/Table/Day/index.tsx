@@ -157,11 +157,7 @@ export const Day: React.FC = () => {
                       ]);
                       await mutateAsync(updateData);
                       await refetch();
-                    }
-                    // checkedTeams.forEach((team) => {
-                    //   handleUpdate(element.value, team);
-                    // });
-                    else handleUpdate(element.value, entry.name);
+                    } else handleUpdate(element.value, entry.name);
                     setCheckedTeams([]);
                   }}
                   options={[
