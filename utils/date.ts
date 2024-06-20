@@ -35,8 +35,8 @@ export function formatDateRange(start: string, end: string): string {
 
   const startDay = startDate.getDate();
   const endDay = endDate.getDate();
-  const startMonth = startDate.toLocaleString("default", { month: "short" });
-  const endMonth = endDate.toLocaleString("default", { month: "short" });
+  const startMonth = startDate.toLocaleString("en", { month: "short" });
+  const endMonth = endDate.toLocaleString("en", { month: "short" });
   const startYear = startDate.getFullYear();
   const endYear = endDate.getFullYear();
 
@@ -53,7 +53,7 @@ export function formatDateRange(start: string, end: string): string {
 
 export function formatYearMonth(dateString: string): string {
   const date = new Date(dateString + "-01"); // Adding day to create a valid Date object
-  const month = date.toLocaleString("default", { month: "long" });
+  const month = date.toLocaleString("en", { month: "long" });
   const year = date.getFullYear();
 
   return `${month} ${year}`;

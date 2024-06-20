@@ -46,6 +46,7 @@ export const Day: React.FC = () => {
 
   const [processedData, setProcessedData] = useState<TransformedData[]>([]);
   const [scores, setScores] = useState<Scores[]>([]);
+  const [checkedTeams, setCheckedTeams] = useState<string[]>([]);
 
   useEffect(() => {
     const processed = processData(data, sort, employees, filterBy);
@@ -65,6 +66,13 @@ export const Day: React.FC = () => {
     setScores(splitted[1][0].data);
     setDataForExport(processed);
   }, [data, sort, employees, filterBy]);
+
+  const handleCheckboxChange = (name: string) => {
+    const newCheckedTeams = checkedTeams.includes(name)
+      ? checkedTeams.filter((team) => team !== name)
+      : [...checkedTeams, name];
+    setCheckedTeams(newCheckedTeams);
+  };
 
   const handleUpdate = async (value: number, name: string) => {
     const updateData = revertData([
@@ -103,12 +111,14 @@ export const Day: React.FC = () => {
           <tr key={entry.name}>
             <td className={styles.td}>
               <div className={styles.flex}>
-                {/* <input
+                <input
+                  className={styles.checkbox}
                   type="checkbox"
-                  checked={checkedTeams[entry.name] || false}
+                  id={entry.name}
+                  checked={checkedTeams.includes(entry.name)}
                   onChange={() => handleCheckboxChange(entry.name)}
-                /> */}
-                {entry.name}
+                />
+                <label htmlFor={entry.name}>{entry.name}</label>
               </div>
             </td>
             {processedData.map((row) => {
@@ -125,8 +135,34 @@ export const Day: React.FC = () => {
                   value={Number(
                     scores?.find((score) => score.name === entry.name)?.score
                   )}
-                  onChange={(element) => {
-                    handleUpdate(element.value, entry.name);
+                  onChange={async (element) => {
+                    if (checkedTeams.includes(entry.name)) {
+                      const updateData = revertData([
+                        {
+                          date: new Date(new Date())
+                            .toISOString()
+                            .split("T")[0],
+                          data: [
+                            ...scores.filter(
+                              (score) => score.name !== entry.name
+                            ),
+                            ...checkedTeams.map((team) => {
+                              return {
+                                name: team,
+                                score: Number(element.value),
+                              };
+                            }),
+                          ],
+                        },
+                      ]);
+                      await mutateAsync(updateData);
+                      await refetch();
+                    }
+                    // checkedTeams.forEach((team) => {
+                    //   handleUpdate(element.value, team);
+                    // });
+                    else handleUpdate(element.value, entry.name);
+                    setCheckedTeams([]);
                   }}
                   options={[
                     { value: 1, label: <SmileBad /> },

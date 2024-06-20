@@ -54,3 +54,16 @@
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+
+/* Checkbox.module.css */
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background-color: black;
+  border-color: black;
+}
