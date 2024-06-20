@@ -32,7 +32,8 @@ export function transformData(input: Data[]): TransformedData[] {
 export function revertData(transformed: TransformedData[]): Data[] {
   return transformed.map((item) => {
     const scores = item.data.reduce((acc, { name, score }) => {
-      acc[name] = score;
+      // @ts-expect-error
+      acc[name] = String(score);
       return acc;
     }, {} as { [key: string]: number });
 
