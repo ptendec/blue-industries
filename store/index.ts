@@ -23,7 +23,6 @@ export const useEmployeeVisibilityStore = create<EmployeeVisibilityState>(
       IG: true,
       Lami: true,
       Span: true,
-      Creating: true,
       Crating: true,
       Loading: true,
     },
