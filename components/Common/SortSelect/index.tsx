@@ -34,7 +34,7 @@ const SortSelect: React.FC<SelectProps> = ({}) => {
         {sort === "None"
           ? "Default"
           : sort === "Ascending"
-          ? "Ascending grade"
+          ? "Ascending rating"
           : "Descending rating"}
         <SharpArrowUp
           className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
