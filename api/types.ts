@@ -7,7 +7,7 @@ export interface DailyResponse {
   Lami: number;
   Span: number;
   Cut: number;
-  Creating: number;
+  Crating: number;
   Loading: number;
 }
 
@@ -19,7 +19,7 @@ export interface WeeklyResponse {
   IG: number;
   Lami: number;
   Span: number;
-  Creating: number;
+  Crating: number;
   Loading: number;
   Cut: number;
   from: string;
@@ -34,7 +34,7 @@ export interface MonthlyResponse {
   IG: number;
   Lami: number;
   Span: number;
-  Creating: number;
+  Crating: number;
   Cut: number;
   Loading: number;
 }
@@ -48,7 +48,7 @@ export interface UpdateDateRequest {
   Lami: number;
   Span: number;
   Cut: number;
-  Creating: number;
+  Crating: number;
   Loading: number;
 }
 

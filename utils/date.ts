@@ -1,3 +1,8 @@
+export const isWorkingDay = (date: string) => {
+  const day = new Date(date).getDay();
+  return day !== 0 && day !== 6;
+};
+
 export function formatDate(paramDate: string): string {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
@@ -23,11 +28,6 @@ export function formatDate(paramDate: string): string {
 
   return `${day} ${month} ${year} (${dayOfWeek}.)`;
 }
-
-export const isWorkingDay = (date: string) => {
-  const day = new Date(date).getDay();
-  return day !== 0 && day !== 6;
-};
 
 export function formatDateRange(start: string, end: string): string {
   const startDate = new Date(start);

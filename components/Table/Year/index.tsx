@@ -24,12 +24,14 @@ export const Year: React.FC = () => {
     queryFn: () => fetchMonthly(fromDate, toDate),
   });
 
-  const { employees, sort, filterBy } = useEmployeeVisibilityStore();
+  const { employees, sort, filterBy, setDataForExport } =
+    useEmployeeVisibilityStore();
 
   const [processedData, setProcessedData] = useState<TransformedData[]>([]);
 
   useEffect(() => {
     const processed = processData(data, sort, employees, filterBy);
+    setDataForExport(processed);
 
     setProcessedData(processed);
   }, [data, sort, employees, filterBy]);
@@ -40,7 +42,7 @@ export const Year: React.FC = () => {
     <table className={styles.table}>
       <thead className={styles.thead}>
         <tr>
-          <th></th>
+          <th className={styles.th}></th>
           {processedData.map((row) => (
             <th className={styles.th} key={row.month}>
               {formatYearMonth(row.month)}

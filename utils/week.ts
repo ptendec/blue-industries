@@ -8,7 +8,7 @@ export interface Data {
   IG: number;
   Lami: number;
   Span: number;
-  Creating: number;
+  Crating: number;
   Loading: number;
   from: string;
   to: string;
@@ -144,9 +144,9 @@ function filterByScore(
   for (const team in averageScores) {
     const avg = averageScores[team];
     if (
-      (filterBy === "Best" && avg > 2 && avg <= 3) ||
-      (filterBy === "Average" && avg > 1 && avg <= 2) ||
-      (filterBy === "Low" && avg === 1) ||
+      (filterBy === "Best" && avg > 2.25 && avg <= 3) ||
+      (filterBy === "Average" && avg > 1.75 && avg <= 2.25) ||
+      (filterBy === "Low" && avg <= 1.75) ||
       filterBy === "None"
     ) {
       filteredTeams[team] = true;

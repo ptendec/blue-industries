@@ -9,7 +9,9 @@
   padding: 8px;
   text-align: center;
 }
-
+.td {
+  height: 60px;
+}
 .thead {
   font-size: 14px;
   /* background-color: #eae8e8; */
@@ -18,7 +20,6 @@
 
 .th {
   border-right: 1px solid #ddd;
-  border-top: none;
 }
 
 .flex {

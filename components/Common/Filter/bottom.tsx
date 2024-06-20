@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { exportData } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
-import { transformDataToExport } from "../../../utils/data";
+import { createScoreMatrix } from "../../../utils/export";
 import { SmileBad } from "../../SvgIcons/smile-bad";
 import { SmileGood } from "../../SvgIcons/smile-good";
 import { SmileMedium } from "../../SvgIcons/smile-medium";
@@ -17,8 +17,9 @@ export const BottomFilter = () => {
 
   const handleSelectChange = async (value: string) => {
     if (value === "Export to Excel") {
-      console.log(transformDataToExport(dataForExport));
-      const res = await mutateAsync(transformDataToExport(dataForExport));
+      const res = await mutateAsync({
+        data: createScoreMatrix(dataForExport),
+      });
       const body = await res.json();
 
       window.location = body.body;

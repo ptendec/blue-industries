@@ -15,10 +15,19 @@ interface Scores {
 export const Week4: React.FC = () => {
   const currentDate = new Date();
   const pastDate = new Date(currentDate);
-  const pastDate2 = new Date(currentDate);
-  pastDate.setDate(currentDate.getDate() - 28);
-  const toDate = pastDate2.toISOString().split("T")[0];
+
+  // Получаем начало текущей недели (предполагаем, что неделя начинается в понедельник)
+  const dayOfWeek = currentDate.getDay();
+  const diffToMonday = (dayOfWeek + 6) % 7; // Считаем количество дней до ближайшего понедельника
+  pastDate.setDate(currentDate.getDate() - diffToMonday);
+
+  // Отнимаем три недели
+  pastDate.setDate(pastDate.getDate() - 21);
+
+  // Получаем даты в формате ISO
   const fromDate = pastDate.toISOString().split("T")[0];
+  const toDate = currentDate.toISOString().split("T")[0];
+
   const { data, isLoading } = useQuery({
     queryKey: ["week4", fromDate, toDate],
     queryFn: () => fetchWeekly(fromDate, toDate),
@@ -41,7 +50,7 @@ export const Week4: React.FC = () => {
     <table className={styles.table}>
       <thead className={styles.thead}>
         <tr>
-          <th></th>
+          <th className={styles.th}></th>
           {processedData.map((row) => (
             <th className={styles.th} key={row.from}>
               {formatDateRange(row.from, row.to)}

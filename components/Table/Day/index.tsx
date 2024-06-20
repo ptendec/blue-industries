@@ -97,13 +97,13 @@ export const Day: React.FC = () => {
     <table className={styles.table}>
       <thead className={styles.thead}>
         <tr>
-          <th></th>
+          <th className={styles.th}></th>
           {processedData.map((row) => (
             <th className={styles.th} key={row.date}>
               {formatDate(row.date)}
             </th>
           ))}
-          <th>{formatDate(new Date().toISOString())}</th>
+          <th className={styles.th}>{formatDate(new Date().toISOString())}</th>
         </tr>
       </thead>
       <tbody>

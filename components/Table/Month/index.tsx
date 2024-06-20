@@ -22,9 +22,13 @@ export const Month: React.FC = () => {
     )
   );
 
-  // Set pastDate to the start of the current month in UTC
+  // Set pastDate to 31 days before the current date in UTC
   const pastDate = new Date(
-    Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), 1)
+    Date.UTC(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - 31
+    )
   );
 
   const toDate = pastDate2.toISOString().split("T")[0];
@@ -53,7 +57,7 @@ export const Month: React.FC = () => {
     <table className={styles.table}>
       <thead className={styles.thead}>
         <tr>
-          <th></th>
+          <th className={styles.th}></th>
           {processedData.map((row) => (
             <th className={styles.th} key={row.date}>
               {formatDate(row.date)}
