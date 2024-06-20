@@ -21,8 +21,7 @@ export const BottomFilter = () => {
         data: createScoreMatrix(dataForExport),
       });
       const body = await res.json();
-
-      window.location = body.body;
+      window.open(body.body, "_blank");
     }
   };
 

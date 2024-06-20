@@ -72,7 +72,16 @@ export const Week4: React.FC = () => {
                   className={styles.td}
                   key={`${row.from}-${row.to}-${entry.name}`}
                 >
-                  {dataItem ? valueToEmoji(dataItem.score) : null}
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {dataItem ? valueToEmoji(dataItem.score) : null}
+                  </div>
                 </td>
               );
             })}

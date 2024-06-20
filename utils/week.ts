@@ -8,6 +8,7 @@ export interface Data {
   IG: number;
   Lami: number;
   Span: number;
+  Creating: number;
   Crating: number;
   Loading: number;
   from: string;

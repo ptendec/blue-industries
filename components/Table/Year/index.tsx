@@ -60,7 +60,16 @@ export const Year: React.FC = () => {
               const dataItem = row.data.find((d) => d.name === entry.name);
               return (
                 <td className={styles.td} key={`${row.month}-${entry.name}`}>
-                  {dataItem ? valueToEmoji(dataItem.score) : null}
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {dataItem ? valueToEmoji(dataItem.score) : null}
+                  </div>{" "}
                 </td>
               );
             })}

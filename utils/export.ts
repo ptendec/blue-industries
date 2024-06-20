@@ -28,7 +28,7 @@ function unifyDateFormat(
 }
 
 export function createScoreMatrix(
-  data: { date: string; data: { name: string; score: number }[] }[]
+  data: { date: string; data: { name: string; score: number | null }[] }[]
 ): string[][] {
   const matrix: string[][] = [];
   const header = ["Date", ...data[0].data.map((d) => d.name)];
@@ -37,7 +37,7 @@ export function createScoreMatrix(
   data.forEach((item) => {
     const row = [item.date];
     item.data.forEach((d) => {
-      row.push(d.score.toString());
+      row.push(d.score !== null ? d.score.toString() : "");
     });
     matrix.push(row);
   });

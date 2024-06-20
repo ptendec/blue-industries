@@ -41,6 +41,7 @@
 }
 .td {
   height: 60px;
+  vertical-align: middle;
 }
 /* Checkbox.module.css */
 
