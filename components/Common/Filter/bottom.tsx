@@ -33,7 +33,7 @@ export const BottomFilter = () => {
           background: "rgba(153, 213, 42, 1)",
           color: "white",
           ...(filterBy === "Best" && {
-            border: "3px solid rgba(114, 157, 33, 1)",
+            border: "5px solid rgba(114, 157, 33, 1)",
           }),
         }}
         onClick={() => setFilterBy(filterBy === "Best" ? "None" : "Best")}
@@ -47,7 +47,7 @@ export const BottomFilter = () => {
           background: "rgba(255, 178, 36, 1)",
           color: "white",
           ...(filterBy === "Average" && {
-            border: "3px solid rgba(196, 137, 28, 1)",
+            border: "5px solid rgba(196, 137, 28, 1)",
           }),
         }}
         className={styles.button}
@@ -61,7 +61,7 @@ export const BottomFilter = () => {
           background: "rgba(229, 77, 46, 1)",
           color: "white",
           ...(filterBy === "Low" && {
-            border: "3px solid rgba(168, 56, 33, 1)",
+            border: "5px solid rgba(168, 56, 33, 1)",
           }),
         }}
         className={styles.button}
