@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import styles from "./style.module.css";
+import React, { useEffect, useRef, useState } from "react";
 import { SharpArrowUp } from "../../SvgIcons/sharp-arrow-up";
+import styles from "./style.module.css";
 
 interface SelectProps {
   options: string[];
@@ -21,10 +21,26 @@ const ExportSelect: React.FC<SelectProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>(value || "");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSelectedOption(value || "");
   }, [value]);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
@@ -33,12 +49,14 @@ const ExportSelect: React.FC<SelectProps> = ({
   };
 
   return (
-    <div className={`${styles.select} ${className}`}>
+    <div className={`${styles.select} ${className}`} ref={selectRef}>
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
         {selectedOption || placeholder}
         {showArrow && (
           // <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
-          <SharpArrowUp className={`${styles.arrow} ${isOpen ? styles.open : ""}`}/>
+          <SharpArrowUp
+            className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+          />
         )}
       </div>
       {isOpen && (

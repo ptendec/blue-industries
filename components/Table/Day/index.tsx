@@ -23,9 +23,14 @@ interface Scores {
 
 export const Day: React.FC = () => {
   const currentDate = new Date();
-  const pastDate = new Date(currentDate);
   const pastDate2 = new Date(currentDate);
-  pastDate.setDate(currentDate.getDate() - 8);
+
+  const pastDate = new Date(currentDate);
+  const dayOfWeek = pastDate.getDay();
+  const startOfWeek =
+    pastDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+  pastDate.setDate(startOfWeek);
+
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading, refetch } = useQuery({
