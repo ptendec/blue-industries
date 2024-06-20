@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react";
 import { fetchDaily, updateDate } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
-import { processData, revertData } from "../../../utils/data";
+import {
+  TransformedData,
+  processData,
+  revertData,
+  splitArray,
+} from "../../../utils/data";
 import { formatDate, isWorkingDay } from "../../../utils/date";
 import Select from "../../Common/DaySelect";
 import { SmileBad } from "../../SvgIcons/smile-bad";
@@ -21,7 +26,6 @@ export const Day: React.FC = () => {
   const pastDate = new Date(currentDate);
   const pastDate2 = new Date(currentDate);
   pastDate.setDate(currentDate.getDate() - 8);
-  pastDate2.setDate(currentDate.getDate() - 1);
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading, refetch } = useQuery({
@@ -34,14 +38,26 @@ export const Day: React.FC = () => {
 
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
 
-  const [processedData, setProcessedData] = useState(
-    processData(data, sort, employees, filterBy)
-  );
-
+  const [processedData, setProcessedData] = useState<TransformedData[]>([]);
   const [scores, setScores] = useState<Scores[]>([]);
 
   useEffect(() => {
-    setProcessedData(processData(data, sort, employees, filterBy));
+    const processed = processData(data, sort, employees, filterBy);
+    if (
+      processed[processed.length - 1]?.date !==
+      new Date().toISOString().split("T")[0]
+    ) {
+      processed.push({
+        date: new Date().toISOString().split("T")[0],
+        data: [],
+      });
+    }
+
+    const splitted = splitArray(processed);
+
+    setProcessedData(splitted[0]);
+    // @ts-expect-error
+    setScores(splitted[1].data);
   }, [data, sort, employees, filterBy]);
 
   useEffect(() => {
@@ -108,7 +124,7 @@ export const Day: React.FC = () => {
               {isWorkingDay(new Date().toISOString().split("T")[0]) && (
                 <Select
                   value={Number(
-                    scores.find((score) => score.name === entry.name)?.score
+                    scores?.find((score) => score.name === entry.name)?.score
                   )}
                   onChange={(element) => {
                     handleUpdate(element.value, entry.name);

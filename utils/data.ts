@@ -152,3 +152,14 @@ function filterByScore(
     data: row.data.filter((entry) => filteredTeams[entry.name]),
   }));
 }
+
+export function splitArray<T>(arr: T[]): [T[], T[]] {
+  if (arr.length === 0) {
+    return [[], []];
+  }
+
+  const allButLast = arr.slice(0, -1);
+  const lastElement = arr.slice(-1);
+
+  return [allButLast, lastElement];
+}
