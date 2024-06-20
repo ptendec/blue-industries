@@ -36,7 +36,8 @@ export const Day: React.FC = () => {
     mutationFn: updateDate,
   });
 
-  const { employees, sort, filterBy } = useEmployeeVisibilityStore();
+  const { employees, sort, filterBy, setDataForExport } =
+    useEmployeeVisibilityStore();
 
   const [processedData, setProcessedData] = useState<TransformedData[]>([]);
   const [scores, setScores] = useState<Scores[]>([]);
@@ -57,6 +58,7 @@ export const Day: React.FC = () => {
 
     setProcessedData(splitted[0]);
     setScores(splitted[1][0].data);
+    setDataForExport(processed);
   }, [data, sort, employees, filterBy]);
 
   const handleUpdate = async (value: number, name: string) => {
@@ -72,7 +74,6 @@ export const Day: React.FC = () => {
         ],
       },
     ]);
-    console.log(scores);
     await mutateAsync(updateData);
     refetch();
   };

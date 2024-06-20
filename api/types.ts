@@ -22,10 +22,12 @@ export interface WeeklyResponse {
   Creating: number;
   Loading: number;
   Cut: number;
+  from: string;
+  to: string;
 }
 
 export interface MonthlyResponse {
-  date: string;
+  month: string;
   Temp: number;
   Pol: number;
   CNC: number;

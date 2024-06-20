@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { fetchDaily } from "../../../api/services";
+import { fetchMonthly } from "../../../api/services";
 import { useEmployeeVisibilityStore } from "../../../store";
 import { valueToEmoji } from "../../../utils/common";
-import { TransformedData, processData } from "../../../utils/data";
-import { formatDate } from "../../../utils/date";
+import { formatYearMonth } from "../../../utils/date";
+import { TransformedData, processData } from "../../../utils/year";
 import styles from "./style.module.css";
 
 interface Scores {
@@ -12,20 +12,19 @@ interface Scores {
   score: number;
 }
 
-export const Month: React.FC = () => {
+export const Year: React.FC = () => {
   const currentDate = new Date();
   const pastDate = new Date(currentDate);
   const pastDate2 = new Date(currentDate);
-  pastDate.setDate(currentDate.getDate() - 31);
+  pastDate.setDate(currentDate.getDate() - 28);
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading } = useQuery({
     queryKey: ["daily", fromDate, toDate],
-    queryFn: () => fetchDaily(fromDate, toDate),
+    queryFn: () => fetchMonthly(fromDate, toDate),
   });
 
-  const { employees, sort, filterBy, setDataForExport } =
-    useEmployeeVisibilityStore();
+  const { employees, sort, filterBy } = useEmployeeVisibilityStore();
 
   const [processedData, setProcessedData] = useState<TransformedData[]>([]);
 
@@ -33,7 +32,6 @@ export const Month: React.FC = () => {
     const processed = processData(data, sort, employees, filterBy);
 
     setProcessedData(processed);
-    setDataForExport(processed);
   }, [data, sort, employees, filterBy]);
 
   if (isLoading) return <div>Loading...</div>;
@@ -44,8 +42,8 @@ export const Month: React.FC = () => {
         <tr>
           <th></th>
           {processedData.map((row) => (
-            <th className={styles.th} key={row.date}>
-              {formatDate(row.date)}
+            <th className={styles.th} key={row.month}>
+              {formatYearMonth(row.month)}
             </th>
           ))}
         </tr>
@@ -59,7 +57,7 @@ export const Month: React.FC = () => {
             {processedData.map((row) => {
               const dataItem = row.data.find((d) => d.name === entry.name);
               return (
-                <td className={styles.td} key={`${row.date}-${entry.name}`}>
+                <td className={styles.td} key={`${row.month}-${entry.name}`}>
                   {dataItem ? valueToEmoji(dataItem.score) : null}
                 </td>
               );

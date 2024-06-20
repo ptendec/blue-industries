@@ -2,11 +2,14 @@ import { useEmployeeVisibilityStore } from "../../../store";
 import { SmileBad } from "../../SvgIcons/smile-bad";
 import { SmileGood } from "../../SvgIcons/smile-good";
 import { SmileMedium } from "../../SvgIcons/smile-medium";
+import ExportSelect from "../ExportSelect";
 import SortSelect from "../SortSelect";
 import styles from "./style.module.css";
 
 export const BottomFilter = () => {
   const { filterBy, setFilterBy } = useEmployeeVisibilityStore();
+
+  const handleSelectChange = (value: string) => {};
 
   return (
     <div className={styles.actions}>
@@ -53,11 +56,11 @@ export const BottomFilter = () => {
         <span>Low Teams</span>
         <SmileBad className={styles.smile} />
       </button>
-      {/* <ExportSelect
+      <ExportSelect
         options={["Export to PDF", "Export to Excel"]}
         placeholder="Export data"
         onChange={handleSelectChange}
-      /> */}
+      />
     </div>
   );
 };

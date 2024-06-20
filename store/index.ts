@@ -9,6 +9,8 @@ interface EmployeeVisibilityState {
   setFilterBy: (filterBy: "Best" | "Average" | "Low" | "None") => void;
   type: "year" | "4 week" | "week" | "month";
   setType: (type: "4 week" | "week" | "month" | "year") => void;
+  dataForExport: any[];
+  setDataForExport: (data: any[]) => void;
 }
 
 export const useEmployeeVisibilityStore = create<EmployeeVisibilityState>(
@@ -38,5 +40,7 @@ export const useEmployeeVisibilityStore = create<EmployeeVisibilityState>(
       set({ filterBy }),
     type: "week",
     setType: (type: "4 week" | "week" | "month" | "year") => set({ type }),
+    dataForExport: [],
+    setDataForExport: (data: any[]) => set({ dataForExport: data }),
   })
 );
