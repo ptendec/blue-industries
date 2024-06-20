@@ -22,18 +22,13 @@ export const Month: React.FC = () => {
     )
   );
 
-  // Set pastDate to 31 days before the current date in UTC
+  // Set pastDate to the start of the current month in UTC
   const pastDate = new Date(
-    Date.UTC(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate() - 31
-    )
+    Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), 1)
   );
 
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
-
   const { data, isLoading } = useQuery({
     queryKey: ["month", fromDate, toDate],
     queryFn: () => fetchDaily(fromDate, toDate),
@@ -68,7 +63,12 @@ export const Month: React.FC = () => {
       <tbody>
         {processedData[0]?.data.map((entry) => (
           <tr key={entry.name}>
-            <td className={styles.td}>
+            <td
+              className={styles.td}
+              style={{
+                minWidth: "150px",
+              }}
+            >
               <div className={styles.flex}>{entry.name}</div>
             </td>
             {processedData.map((row) => {

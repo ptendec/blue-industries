@@ -61,7 +61,12 @@ export const Week4: React.FC = () => {
       <tbody>
         {processedData[0]?.data.map((entry) => (
           <tr key={entry.name}>
-            <td className={styles.td}>
+            <td
+              className={styles.td}
+              style={{
+                minWidth: "150px",
+              }}
+            >
               <div className={styles.flex}>{entry.name}</div>
             </td>
             {processedData.map((row) => {

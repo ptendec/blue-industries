@@ -109,7 +109,12 @@ export const Day: React.FC = () => {
       <tbody>
         {processedData[0]?.data.map((entry) => (
           <tr key={entry.name}>
-            <td className={styles.td}>
+            <td
+              className={styles.td}
+              style={{
+                minWidth: "150px",
+              }}
+            >
               <div className={styles.flex}>
                 <input
                   className={styles.checkbox}
