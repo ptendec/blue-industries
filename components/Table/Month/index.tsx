@@ -20,7 +20,7 @@ export const Month: React.FC = () => {
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading } = useQuery({
-    queryKey: ["daily", fromDate, toDate],
+    queryKey: ["month", fromDate, toDate],
     queryFn: () => fetchDaily(fromDate, toDate),
   });
 

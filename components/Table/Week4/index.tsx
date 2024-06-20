@@ -20,7 +20,7 @@ export const Week4: React.FC = () => {
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading } = useQuery({
-    queryKey: ["daily", fromDate, toDate],
+    queryKey: ["week4", fromDate, toDate],
     queryFn: () => fetchWeekly(fromDate, toDate),
   });
 
@@ -57,6 +57,7 @@ export const Week4: React.FC = () => {
             </td>
             {processedData.map((row) => {
               const dataItem = row.data.find((d) => d.name === entry.name);
+              console.log(dataItem);
               return (
                 <td
                   className={styles.td}

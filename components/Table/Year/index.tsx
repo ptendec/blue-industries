@@ -16,11 +16,11 @@ export const Year: React.FC = () => {
   const currentDate = new Date();
   const pastDate = new Date(currentDate);
   const pastDate2 = new Date(currentDate);
-  pastDate.setDate(currentDate.getDate() - 28);
+  pastDate.setDate(currentDate.getDate() - 365);
   const toDate = pastDate2.toISOString().split("T")[0];
   const fromDate = pastDate.toISOString().split("T")[0];
   const { data, isLoading } = useQuery({
-    queryKey: ["daily", fromDate, toDate],
+    queryKey: ["year", fromDate, toDate],
     queryFn: () => fetchMonthly(fromDate, toDate),
   });
 
