@@ -1,26 +1,13 @@
 import { useEmployeeVisibilityStore } from "../../../store";
-import styles from "./style.module.css";
 import { EyeIcon } from "../../SvgIcons/eye";
 import { EyeHideIcon } from "../../SvgIcons/eye-hide";
 import FilterAccordion from "../FilterAccordion";
 import FilterTabs from "../FilterTabs";
-import SortSelect from "../SortSelect";
 import { BottomFilter } from "./bottom";
+import styles from "./style.module.css";
 
 export const Filter = () => {
-  const { employees, toggleEmployee, setSort, setFilterBy, filterBy } =
-    useEmployeeVisibilityStore();
-
-  const handleSelectChange = (option: string) => {
-    switch (option) {
-      case "Ascending grade":
-        return setSort("Ascending");
-      case "Decreasing rating":
-        return setSort("Descending");
-      default:
-        return setSort("None");
-    }
-  };
+  const { employees, toggleEmployee } = useEmployeeVisibilityStore();
 
   const handleTabClick = (tab: string) => {
     console.log("Selected tab:", tab);
@@ -32,10 +19,9 @@ export const Filter = () => {
         <h1 className={styles.mainTitle}>Team effectiveness</h1>
         <div className={styles.filterBlocks}>
           <FilterTabs
-            tabs={["Week", "4 weeks", "1 year"]}
+            tabs={["Week", "4 weeks", "1 month", "1 year"]}
             onTabClick={handleTabClick}
           />
-
           <FilterAccordion title="Filters">
             <h4 className={styles.filtersTitle}>Show and hide Teams</h4>
             <div>
@@ -51,10 +37,9 @@ export const Filter = () => {
                   </div>
                 ))}
               </div>
-              <BottomFilter handleSelectChange={handleSelectChange}/>
+              <BottomFilter />
             </div>
-        </FilterAccordion>
-
+          </FilterAccordion>
         </div>
       </div>
     </div>

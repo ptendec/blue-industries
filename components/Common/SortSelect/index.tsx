@@ -1,46 +1,44 @@
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import { useEmployeeVisibilityStore } from "../../../store";
 import { SharpArrowUp } from "../../SvgIcons/sharp-arrow-up";
 import styles from "./style.module.css";
+import DownIcon from "/public/icons/down.svg";
+import UpIcon from "/public/icons/up.svg";
+interface SelectProps {}
 
-interface SelectProps {
-  options: string[];
-  placeholder: string;
-  onChange: (option: string) => void;
-  showArrow?: boolean;
-  className?: string;
-  value?: string;
-}
-
-const SortSelect: React.FC<SelectProps> = ({
-  options,
-  placeholder,
-  onChange,
-  showArrow = true,
-  className,
-  value,
-}) => {
-  const [selectedOption, setSelectedOption] = useState<string>(value || "");
+const SortSelect: React.FC<SelectProps> = ({}) => {
+  const { sort, setSort } = useEmployeeVisibilityStore();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const selectRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setSelectedOption(value || "");
-  }, [value]);
-
-  const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-    onChange(option);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
   };
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={`${styles.select} ${className}`}>
+    <div className={styles.select} ref={selectRef}>
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
-        {selectedOption || placeholder}
-        {showArrow && (
-          <SharpArrowUp
-            className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
-          />
-        )}
+        {sort === "None"
+          ? "Sort by"
+          : sort === "Ascending"
+          ? "Ascending grade"
+          : "Descending rating"}
+        <SharpArrowUp
+          className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+        />
       </div>
       {isOpen && (
         <ul
@@ -49,18 +47,32 @@ const SortSelect: React.FC<SelectProps> = ({
           }}
           className={styles.selectOptions}
         >
-          {options.map((option, index) => (
-            <li
-              style={{
-                listStyle: "none",
-              }}
-              key={index}
-              className={styles.selectOption}
-              onClick={() => handleOptionClick(option)}
-            >
-              {option}
-            </li>
-          ))}
+          <li
+            style={{
+              listStyle: "none",
+            }}
+            className={styles.selectOption}
+            onClick={() => {
+              setSort("Ascending");
+              setIsOpen(false);
+            }}
+          >
+            <Image src={UpIcon} alt="" />
+            Ascending grade
+          </li>
+          <li
+            style={{
+              listStyle: "none",
+            }}
+            className={styles.selectOption}
+            onClick={() => {
+              setSort("Descending");
+              setIsOpen(false);
+            }}
+          >
+            <Image src={DownIcon} alt="" />
+            Descending rating
+          </li>
         </ul>
       )}
     </div>

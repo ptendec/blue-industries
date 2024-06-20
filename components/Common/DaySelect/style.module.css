@@ -7,9 +7,6 @@
   color: #000;
   transform: rotate(180deg);
   transition: all 0.3s;
-  position: relative;
-  top: -10px;
-  left: 5px;
 }
 
 .arrow.open {
@@ -19,11 +16,13 @@
 
 .selectDisplay {
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
   background-color: #fff;
   transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .selectDisplay:hover {

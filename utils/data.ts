@@ -7,7 +7,7 @@ export interface Data {
   IG: number;
   Lami: number;
   Span: number;
-  Crating: number;
+  Creating: number;
   Loading: number;
 }
 
@@ -26,8 +26,8 @@ export function transformData(input: Data[]): TransformedData[] {
     return { date, data };
   });
 }
+
 export function revertData(transformed: TransformedData[]): Data[] {
-  // @ts-expect-error
   return transformed.map((item) => {
     const scores = item.data.reduce((acc, { name, score }) => {
       acc[name] = score;
@@ -44,7 +44,7 @@ export function revertData(transformed: TransformedData[]): Data[] {
       }
     });
 
-    return result;
+    return result as unknown as Data;
   });
 }
 
@@ -52,16 +52,21 @@ export const sortData = (
   data: TransformedData[],
   sort: string
 ): TransformedData[] => {
-  if (sort === "Ascending") {
-    return data.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-  } else if (sort === "Descending") {
-    return data.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  }
-  return data; // If sort is "None" or any other value, return the data as is.
+  const averageScores = calculateAverageScores(data);
+
+  return data.map((row) => ({
+    ...row,
+    data: row.data.sort((a, b) => {
+      if (sort === "Ascending") {
+        // @ts-expect-error
+        return averageScores[a.name] - averageScores[b.name];
+      } else if (sort === "Descending") {
+        // @ts-expect-error
+        return averageScores[b.name] - averageScores[a.name];
+      }
+      return 0;
+    }),
+  }));
 };
 
 export const filterData = (
@@ -81,54 +86,53 @@ export const processData = (
   filterBy: "Best" | "Average" | "Low" | "None"
 ): TransformedData[] => {
   const transformedData = transformData(initialData);
+  const averageScores = calculateAverageScores(transformedData);
   const sortedData = sortData(transformedData, sort);
+  // @ts-expect-error
+  const filteredData = filterByScore(sortedData, filterBy, averageScores);
 
-  // Calculate average scores
-  const averageScores = calculateAverageScores(sortedData);
-
-  // Filter based on average scores and visibility flags
-  const filteredTeams = filterByScore(averageScores, filterBy);
-
-  // Filter employees based on visibility
-  const filteredData = sortedData.map((row) => ({
+  return filteredData.map((row) => ({
     ...row,
-    data: row.data.filter(
-      (entry) => employees[entry.name] && filteredTeams[entry.name]
-    ),
+    data: row.data.filter((entry) => employees[entry.name]),
   }));
-
-  return filteredData;
 };
 
-export const calculateAverageScores = (
-  data: TransformedData[]
-): {
-  [key: string]: number;
-} => {
-  const totalScores: { [key: string]: { sum: number; count: number } } = {};
+function calculateAverageScores(data: TransformedData[]): {
+  [key: string]: number | string;
+} {
+  const scoreMap: { [name: string]: { totalScore: number; count: number } } =
+    {};
 
-  data.forEach((row) => {
-    row.data.forEach(({ name, score }) => {
-      if (!totalScores[name]) {
-        totalScores[name] = { sum: 0, count: 0 };
+  data.forEach((entry) => {
+    entry.data.forEach((record) => {
+      let score = 0;
+      if (typeof record.score === "string") {
+        // @ts-expect-error
+        score = record.score.trim() === "" ? 0 : parseFloat(record.score);
+      } else {
+        score = record.score;
       }
-      totalScores[name].sum += score;
-      totalScores[name].count += 1;
+      if (!scoreMap[record.name]) {
+        scoreMap[record.name] = { totalScore: 0, count: 0 };
+      }
+      scoreMap[record.name].totalScore += score;
+      scoreMap[record.name].count += 1;
     });
   });
 
   const averageScores: { [key: string]: number } = {};
-  for (const key in totalScores) {
-    averageScores[key] = totalScores[key].sum / totalScores[key].count;
-  }
+  Object.keys(scoreMap).forEach((name) => {
+    averageScores[name] = scoreMap[name].totalScore / scoreMap[name].count;
+  });
 
   return averageScores;
-};
+}
 
 function filterByScore(
-  averageScores: { [key: string]: number },
-  filterBy: "Best" | "Average" | "Low" | "None"
-): { [key: string]: boolean } {
+  data: TransformedData[],
+  filterBy: "Best" | "Average" | "Low" | "None",
+  averageScores: { [key: string]: number }
+): TransformedData[] {
   const filteredTeams: { [key: string]: boolean } = {};
 
   for (const team in averageScores) {
@@ -136,12 +140,15 @@ function filterByScore(
     if (
       (filterBy === "Best" && avg > 2 && avg <= 3) ||
       (filterBy === "Average" && avg > 1 && avg <= 2) ||
-      (filterBy === "Low" && avg > 0 && avg <= 1) ||
+      (filterBy === "Low" && avg === 1) ||
       filterBy === "None"
     ) {
       filteredTeams[team] = true;
     }
   }
 
-  return filteredTeams;
+  return data.map((row) => ({
+    ...row,
+    data: row.data.filter((entry) => filteredTeams[entry.name]),
+  }));
 }

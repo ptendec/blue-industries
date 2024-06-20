@@ -33,14 +33,21 @@ export const Day: React.FC = () => {
   });
 
   const { employees, sort, filterBy } = useEmployeeVisibilityStore();
-  const processedData = processData(data, sort, employees, filterBy);
+
+  const [processedData, setProcessedData] = useState(
+    processData(data, sort, employees, filterBy)
+  );
 
   const [scores, setScores] = useState<Scores[]>([]);
 
   useEffect(() => {
+    setProcessedData(processData(data, sort, employees, filterBy));
+  }, [data, sort, employees, filterBy]);
+
+  useEffect(() => {
     const row = processedData.find((row) => row.date === toDate);
     setScores(row?.data ?? []);
-  }, [data]);
+  }, [processedData, toDate]);
 
   const handleUpdate = async (value: number, name: string) => {
     const row = processedData.find((row) => row.date === toDate);
