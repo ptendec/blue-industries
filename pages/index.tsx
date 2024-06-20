@@ -33,7 +33,15 @@ export default function MainPage() {
           }}
         >
           <Filter />
-          {showType()}
+          <div
+            style={{
+              position: "relative",
+              zIndex: "20",
+              backgroundColor: "white",
+            }}
+          >
+            {showType()}
+          </div>
         </div>
       </Flex>
     </NoSSR>
