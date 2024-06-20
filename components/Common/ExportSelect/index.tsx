@@ -51,7 +51,7 @@ const ExportSelect: React.FC<SelectProps> = ({
   return (
     <div className={`${styles.select} ${className}`} ref={selectRef}>
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
-        {selectedOption || placeholder}
+        Export data
         {showArrow && (
           // <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
           <SharpArrowUp
