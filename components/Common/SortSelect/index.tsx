@@ -32,7 +32,7 @@ const SortSelect: React.FC<SelectProps> = ({}) => {
     <div className={styles.select} ref={selectRef}>
       <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
         {sort === "None"
-          ? "Sort by"
+          ? "Default"
           : sort === "Ascending"
           ? "Ascending grade"
           : "Descending rating"}
@@ -53,12 +53,25 @@ const SortSelect: React.FC<SelectProps> = ({}) => {
             }}
             className={styles.selectOption}
             onClick={() => {
+              setSort("None");
+              setIsOpen(false);
+            }}
+          >
+            {/* <Image src={UpIcon} alt="" /> */}
+            Default
+          </li>
+          <li
+            style={{
+              listStyle: "none",
+            }}
+            className={styles.selectOption}
+            onClick={() => {
               setSort("Ascending");
               setIsOpen(false);
             }}
           >
             <Image src={UpIcon} alt="" />
-            Ascending grade
+            Ascending rating
           </li>
           <li
             style={{

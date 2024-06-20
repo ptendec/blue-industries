@@ -89,7 +89,9 @@ export const processData = (
 ): TransformedData[] => {
   const transformedData = transformData(initialData);
   const averageScores = calculateAverageScores(transformedData);
-  const sortedData = sortData(transformedData, sort);
+  const sortedData =
+    sort !== "None" ? sortData(transformedData, sort) : transformedData;
+
   // @ts-expect-error
   const filteredData = filterByScore(sortedData, filterBy, averageScores);
 

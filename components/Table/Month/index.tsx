@@ -71,23 +71,25 @@ export const Month: React.FC = () => {
             >
               <div className={styles.flex}>{entry.name}</div>
             </td>
-            {processedData.map((row) => {
-              const dataItem = row.data.find((d) => d.name === entry.name);
-              return (
-                <td className={styles.td} key={`${row.date}-${entry.name}`}>
-                  <div
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {dataItem ? valueToEmoji(dataItem.score) : null}
-                  </div>{" "}
-                </td>
-              );
-            })}
+            {processedData.length > 0
+              ? processedData.map((row) => {
+                  const dataItem = row.data.find((d) => d.name === entry.name);
+                  return (
+                    <td className={styles.td} key={`${row.date}-${entry.name}`}>
+                      <div
+                        style={{
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {dataItem ? valueToEmoji(dataItem.score) : null}
+                      </div>
+                    </td>
+                  );
+                })
+              : "No data"}
           </tr>
         ))}
       </tbody>
