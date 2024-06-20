@@ -77,14 +77,3 @@ export async function exportData(
   );
   return response;
 }
-
-export function transformData(data: TransformedData[]): ExportDataRequest {
-  const transformed: string[][] = [
-    ["Date", ...data[0].data.map((d) => d.name)],
-    ...data.map((d) => [
-      d.date,
-      ...d.data.map((item) => item.score.toString()),
-    ]),
-  ];
-  return { data: transformed };
-}

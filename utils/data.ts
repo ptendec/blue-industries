@@ -1,3 +1,5 @@
+import { ExportDataRequest } from "../api/types";
+
 export interface Data {
   date: string;
   Cut: number;
@@ -162,4 +164,17 @@ export function splitArray<T>(arr: T[]): [T[], T[]] {
   const lastElement = arr.slice(-1);
 
   return [allButLast, lastElement];
+}
+
+export function transformDataToExport(
+  data: TransformedData[]
+): ExportDataRequest {
+  const transformed: string[][] = [
+    ["Date", ...data[0].data.map((d) => d.name)],
+    ...data.map((d) => [
+      d.date,
+      ...d.data.map((item) => item.score.toString()),
+    ]),
+  ];
+  return { data: transformed };
 }

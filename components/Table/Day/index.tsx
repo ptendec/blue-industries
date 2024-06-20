@@ -59,16 +59,12 @@ export const Day: React.FC = () => {
     setScores(splitted[1][0].data);
   }, [data, sort, employees, filterBy]);
 
-  useEffect(() => {
-    const row = processedData.find((row) => row.date === toDate);
-    setScores(row?.data ?? []);
-  }, [processedData, toDate]);
-
   const handleUpdate = async (value: number, name: string) => {
     const updateData = revertData([
       {
         date: new Date(new Date()).toISOString().split("T")[0],
         data: [
+          ...scores.filter((score) => score.name !== name),
           {
             name,
             score: Number(value),
@@ -76,6 +72,7 @@ export const Day: React.FC = () => {
         ],
       },
     ]);
+    console.log(scores);
     await mutateAsync(updateData);
     refetch();
   };
