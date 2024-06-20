@@ -56,8 +56,7 @@ export const Day: React.FC = () => {
     const splitted = splitArray(processed);
 
     setProcessedData(splitted[0]);
-    // @ts-expect-error
-    setScores(splitted[1].data);
+    setScores(splitted[1][0].data);
   }, [data, sort, employees, filterBy]);
 
   useEffect(() => {
@@ -66,19 +65,16 @@ export const Day: React.FC = () => {
   }, [processedData, toDate]);
 
   const handleUpdate = async (value: number, name: string) => {
-    const row = processedData.find((row) => row.date === toDate);
-    if (!row) return;
-    const formed = row.data.map((entry) => {
-      if (entry.name === name) {
-        return { name, score: value };
-      }
-      return {
-        name: entry.name,
-        score: Number(entry.score),
-      };
-    });
     const updateData = revertData([
-      { date: new Date(row.date).toISOString().split("T")[0], data: formed },
+      {
+        date: new Date(new Date()).toISOString().split("T")[0],
+        data: [
+          {
+            name,
+            score: Number(value),
+          },
+        ],
+      },
     ]);
     await mutateAsync(updateData);
     refetch();

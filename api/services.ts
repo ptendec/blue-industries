@@ -1,5 +1,7 @@
+import { TransformedData } from "../utils/data";
 import {
   DailyResponse,
+  ExportDataRequest,
   MonthlyResponse,
   UpdateDateRequest,
   WeeklyResponse,
@@ -59,3 +61,30 @@ export const updateDate = async (data: UpdateDateRequest[]): Promise<void> => {
     throw new Error("Network response was not ok");
   }
 };
+
+export async function exportData(
+  exportData: ExportDataRequest
+): Promise<Response> {
+  const response = await fetch(
+    "https://w4i1vz3nzk.execute-api.us-east-1.amazonaws.com/dev/dashboard/export",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(exportData),
+    }
+  );
+  return response;
+}
+
+export function transformData(data: TransformedData[]): ExportDataRequest {
+  const transformed: string[][] = [
+    ["Date", ...data[0].data.map((d) => d.name)],
+    ...data.map((d) => [
+      d.date,
+      ...d.data.map((item) => item.score.toString()),
+    ]),
+  ];
+  return { data: transformed };
+}

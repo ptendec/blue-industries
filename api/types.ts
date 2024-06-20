@@ -49,3 +49,7 @@ export interface UpdateDateRequest {
   Creating: number;
   Loading: number;
 }
+
+export interface ExportDataRequest {
+  data: string[][];
+}
